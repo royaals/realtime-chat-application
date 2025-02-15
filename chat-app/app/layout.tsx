@@ -1,18 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import localFont from 'next/font/local';
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
-
-const inter = localFont({
-  src: '../public/fonts/Inter-Variable.woff2',
-  variable: '--font-inter',
-});
-
-const jetbrainsMono = localFont({
-  src: '../public/fonts/JetBrainsMono-Variable.woff2',
-  variable: '--font-mono',
-});
 
 export const metadata: Metadata = {
   title: "Ayna Chat",
@@ -26,9 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
