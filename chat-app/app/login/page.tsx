@@ -8,7 +8,7 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Label } from "../../components/ui/label"
 import { Loader2 } from "lucide-react"
-
+import ThemeToggle from "./ThemeToggle";
 import Link from "next/link"
 import api from "../../utils/api"
 
@@ -59,7 +59,10 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#FAFAFA] dark:bg-gray-900">
-      
+      <div className="fixed top-6 right-6">
+        <ThemeToggle />
+      </div>
+
       <div className="w-full max-w-md text-center mb-8">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Welcome Back</h1>
         <p className="text-muted-foreground">Sign in to your account to continue</p>

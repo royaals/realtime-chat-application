@@ -11,7 +11,7 @@ import { Label } from "../../components/ui/label"
 import Link from "next/link"
 import { Loader2 } from "lucide-react"
 import api from "../../utils/api"
-
+import ThemeToggle from "./ThemeToggle";
 export default function Register() {
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
@@ -83,7 +83,10 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#FAFAFA] dark:bg-gray-900">
-      
+      <div className="fixed top-6 right-6">
+        <ThemeToggle />
+      </div>
+
 
       <div className="w-full max-w-md text-center mb-8">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Create Account</h1>

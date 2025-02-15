@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-
+import ThemeToggle from "./ThemeToggle";
 import { SidebarTrigger } from "../ui/sidebar"
 import { Search, Bell } from "lucide-react"
 
@@ -22,6 +22,7 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-6">
+      <ThemeToggle />
         <button className="p-2 hover:bg-gray-100 rounded-xl transition-colors text-gray-600">
           <Search size={20} />
         </button>
