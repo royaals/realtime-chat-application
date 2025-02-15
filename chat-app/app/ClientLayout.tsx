@@ -1,18 +1,16 @@
-"use client"
+// app/ClientLayout.tsx
+"use client";
+import { ThemeProvider } from "next-themes";
+import { ChatProvider } from "../context/ChatContext";
 
-import { ThemeProvider } from "../components/ui/theme-provider"
-
-
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
-      {children}
-      
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ChatProvider>{children}</ChatProvider>
     </ThemeProvider>
-  )
+  );
 }
