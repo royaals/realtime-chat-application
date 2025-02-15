@@ -8,7 +8,8 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: true
-  }
+  },
+  forceSwcTransforms: true,
 }
 
 module.exports = nextConfig
