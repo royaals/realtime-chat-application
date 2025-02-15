@@ -4,13 +4,13 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
+import { Label } from "../../components/ui/label"
 
 import Link from "next/link"
 import { Loader2 } from "lucide-react"
-import api from "@/utils/api"
+import api from "../../utils/api"
 
 export default function Register() {
   const [email, setEmail] = useState("")

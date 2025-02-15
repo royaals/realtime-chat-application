@@ -1,7 +1,7 @@
 // app/ClientLayout.tsx
 "use client";
 import { ThemeProvider } from "next-themes";
-import { ChatProvider } from "@/context/ChatContext";
+import { ChatProvider } from "../context/ChatContext";
 
 export default function ClientLayout({
   children,

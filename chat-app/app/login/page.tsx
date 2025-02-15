@@ -4,13 +4,13 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
+import { Input } from "../../components/ui/input"
+import { Button } from "../../components/ui/button"
+import { Label } from "../../components/ui/label"
 import { Loader2 } from "lucide-react"
 
 import Link from "next/link"
-import api from "@/utils/api"
+import api from "../../utils/api"
 
 export default function Login() {
   const [email, setEmail] = useState("")

@@ -12,7 +12,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { useState } from "react"
-import { useChat } from "@/context/ChatContext"
+import { useChat } from "../../context/ChatContext"
 import { ScrollArea } from "../ui/scroll-area"
 import { Plus, MessageSquare } from "lucide-react"
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import ChatBubble from "./ChatBubble"
 import ChatInput from "./ChatInput"
 import io, { type Socket } from "socket.io-client"
-import { useChat } from "@/context/ChatContext"
+import { useChat } from "../../context/ChatContext"
 
 type ChatMessage = {
   owner: boolean
