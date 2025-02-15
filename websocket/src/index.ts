@@ -18,12 +18,12 @@ io.on("connection", (socket) => {
 
   socket.on("message", (message) => {
     console.log("Received message:", message);
-    // Create echo message
+    
     const echoMessage = {
       owner: false,
       content: message.content
     };
-    // Emit the echo message back to the same client
+   
     socket.emit("message", echoMessage);
   });
 
