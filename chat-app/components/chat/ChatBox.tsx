@@ -1,106 +1,99 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import ChatBubble from "./ChatBubble";
-import ChatInput from "./ChatInput";
-import io, { Socket } from "socket.io-client";
-import { useChat } from "@/context/ChatContext";
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import ChatBubble from "./ChatBubble"
+import ChatInput from "./ChatInput"
+import io, { type Socket } from "socket.io-client"
+import { useChat } from "@/context/ChatContext"
 
 type ChatMessage = {
-  owner: boolean;
-  content: string;
-};
+  owner: boolean
+  content: string
+}
 
-const ChatBox = () => {
-  const [chat, setChat] = useState<ChatMessage[]>([]);
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const router = useRouter();
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const { selectedChat } = useChat();
+export default function ChatBox() {
+  const [chat, setChat] = useState<ChatMessage[]>([])
+  const [socket, setSocket] = useState<Socket | null>(null)
+  const router = useRouter()
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+  const { selectedChat } = useChat()
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token")
+    const user = localStorage.getItem("user")
 
     if (!token || !user) {
-      router.push("/");
-      return;
+      router.push("/")
+      return
     }
 
     const socketConnection = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL, {
       transports: ["websocket"],
-    });
-    setSocket(socketConnection);
+    })
+    setSocket(socketConnection)
 
     socketConnection.on("message", (message: ChatMessage) => {
-      appendChat(message);
-    });
+      appendChat(message)
+    })
 
     return () => {
-      socketConnection.disconnect();
-    };
-  }, [router, selectedChat]);
+      socketConnection.disconnect()
+    }
+  }, [router])
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) return;
+    const user = localStorage.getItem("user")
+    if (!user) return
 
-    const { id } = JSON.parse(user);
-    const storedChat = localStorage.getItem(
-      `chatMessages_${selectedChat}-${id}`
-    );
+    const { id } = JSON.parse(user)
+    const storedChat = localStorage.getItem(`chatMessages_${selectedChat}-${id}`)
     if (storedChat) {
-      setChat(JSON.parse(storedChat));
+      setChat(JSON.parse(storedChat))
     } else {
-      setChat([]);
+      setChat([])
     }
-  }, [selectedChat]);
+  }, [selectedChat])
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
-  };
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
+  }
 
   const appendChat = (message: ChatMessage) => {
     setChat((prevChat) => {
-      const updatedChat = [...prevChat, message];
+      const updatedChat = [...prevChat, message]
       if (typeof window !== "undefined") {
-        const user = localStorage.getItem("user");
+        const user = localStorage.getItem("user")
         if (user) {
-          const { id } = JSON.parse(user);
-          localStorage.setItem(
-            `chatMessages_${selectedChat}-${id}`,
-            JSON.stringify(updatedChat)
-          );
+          const { id } = JSON.parse(user)
+          localStorage.setItem(`chatMessages_${selectedChat}-${id}`, JSON.stringify(updatedChat))
         }
       }
-      return updatedChat;
-    });
-  };
+      return updatedChat
+    })
+    scrollToBottom()
+  }
 
   const sendMessage = (message: ChatMessage) => {
-    appendChat(message);
-    if (!socket) return;
-    socket.emit("message", message);
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chat]);
+    appendChat(message)
+    if (!socket) return
+    socket.emit("message", message)
+  }
 
   return (
-    <div className="relative flex flex-col h-[90vh]">
-      <div className="flex-grow overflow-y-scroll px-4 pb-4 sm:px-6 lg:px-10 bg-white dark:bg-transparent text-black dark:text-white">
-        {chat.map((message, index) => (
-          <ChatBubble key={index} message={message} />
-        ))}
-        <div ref={messagesEndRef} />
+    <div className="relative flex flex-col h-[90vh] bg-chat-gradient">
+      <div className="flex-grow overflow-y-auto px-4 pb-4 sm:px-6 lg:px-8">
+        <div className="space-y-4 py-4">
+          {chat.map((message, index) => (
+            <ChatBubble key={index} message={message} />
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
-      <div className="w-full px-4 py-2 border-t border-slate-200 dark:border-slate-700 bg-gray-100 dark:bg-background text-slate-black dark:text-slate-200">
+      <div className="w-full p-4 bg-chat-darker">
         <ChatInput appendChat={sendMessage} />
       </div>
     </div>
-  );
-};
-
-export default ChatBox;
+  )
+}

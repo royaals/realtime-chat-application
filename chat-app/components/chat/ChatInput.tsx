@@ -1,69 +1,72 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { Loader2, SendHorizontal } from "lucide-react";
+"use client"
+
+import type React from "react"
+import { useRef, useState } from "react"
+import { Loader2, SendHorizontal, Smile, Paperclip } from "lucide-react"
 
 type ChatMessage = {
-  owner: boolean;
-  content: string;
-};
-
-interface ChatInputProps {
-  appendChat: (message: ChatMessage) => void;
+  owner: boolean
+  content: string
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ appendChat }) => {
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+interface ChatInputProps {
+  appendChat: (message: ChatMessage) => void
+}
+
+export default function ChatInput({ appendChat }: ChatInputProps) {
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    if (!message.trim()) return
 
-    if (!message.trim()) return;
-
-    setLoading(true);
-    const newMessage = { owner: true, content: message };
-    appendChat(newMessage);
-    setMessage("");
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    setLoading(true)
+    try {
+      // Simulate sending the message
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      appendChat({ owner: true, content: message })
+      setMessage("")
+      inputRef.current?.focus()
+    } catch (error) {
+      console.error("Error sending message:", error)
+    } finally {
+      setLoading(false)
     }
-  }, []);
+  }
 
   return (
-    <div className="w-full">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-row items-center justify-between px-3 py-2 mx-4 border-2 rounded-2xl border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-gray-900 text-slate-black dark:text-slate-200"
-      >
-        <input
-          ref={inputRef}
-          disabled={loading}
-          value={message}
-          type="text"
-          placeholder="Send a message"
-          className="w-full h-[4vh] bg-slate-100 dark:bg-gray-900 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none"
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        {!loading ? (
-          <button
-            type="submit"
-            disabled={loading}
-            className="p-2 bg-slate-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl"
-          >
-            <SendHorizontal size={20} color="#6b7280" strokeWidth={2} />
-          </button>
-        ) : (
-          <div className="p-2">
-            <Loader2 size={20} className="animate-spin text-slate-400" />
-          </div>
-        )}
-      </form>
-    </div>
-  );
-};
+    <form onSubmit={handleSubmit} className="flex items-center gap-2 p-3 bg-white rounded-2xl border shadow-sm">
+      <button type="button" className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+        <Smile size={20} />
+      </button>
+      <input
+        ref={inputRef}
+        disabled={loading}
+        value={message}
+        type="text"
+        placeholder="Type a message..."
+        className="flex-1 bg-transparent placeholder-gray-400 focus:outline-none text-gray-700"
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <button type="button" className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+        <Paperclip size={20} />
+      </button>
+      {!loading ? (
+        <button
+          type="submit"
+          disabled={loading || !message.trim()}
+          className="p-2 bg-primary rounded-xl text-white disabled:opacity-50 transition-opacity hover:bg-primary/90"
+        >
+          <SendHorizontal size={20} />
+        </button>
+      ) : (
+        <div className="p-2">
+          <Loader2 size={20} className="animate-spin text-gray-400" />
+        </div>
+      )}
+    </form>
+  )
+}
 
-export default ChatInput;

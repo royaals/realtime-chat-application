@@ -1,30 +1,23 @@
 type Message = {
-  owner: boolean;
-  content: string;
-};
-
-interface ChatBubbleProps {
-  message: Message;
+  owner: boolean
+  content: string
 }
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
+interface ChatBubbleProps {
+  message: Message
+}
+
+export default function ChatBubble({ message }: ChatBubbleProps) {
   return (
-    <div
-      className={`pt-3 pb-1 flex ${
-        message.owner ? "justify-end" : "justify-start"
-      }`}
-    >
+    <div className={`flex ${message.owner ? "justify-end" : "justify-start"}`}>
       <div
-        className={`relative p-3 px-4 rounded-2xl shadow-md ${
-          message.owner
-            ? "bg-primary text-white"
-            : "bg-slate-100 dark:bg-gray-700 text-black dark:text-slate-200"
-        } break-words max-w-[50vw]`}
+        className={`relative p-4 rounded-2xl max-w-[70%] shadow-sm ${
+          message.owner ? "bg-primary text-primary-foreground" : "bg-gray-100 text-gray-900"
+        }`}
       >
-        <p>{message.content}</p>
+        <p className="text-sm leading-relaxed">{message.content}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChatBubble;
