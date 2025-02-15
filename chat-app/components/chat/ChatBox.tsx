@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import ChatBubble from "./ChatBubble"
 import ChatInput from "./ChatInput"
@@ -19,6 +19,31 @@ export default function ChatBox() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
   const { selectedChat } = useChat()
 
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
+  }, [])
+
+  const appendChat = useCallback((message: ChatMessage) => {
+    setChat((prevChat) => {
+      const updatedChat = [...prevChat, message]
+      if (typeof window !== "undefined") {
+        const user = localStorage.getItem("user")
+        if (user) {
+          const { id } = JSON.parse(user)
+          localStorage.setItem(`chatMessages_${selectedChat}-${id}`, JSON.stringify(updatedChat))
+        }
+      }
+      return updatedChat
+    })
+    scrollToBottom()
+  }, [selectedChat, scrollToBottom])
+
+  const sendMessage = useCallback((message: ChatMessage) => {
+    appendChat(message)
+    if (!socket) return
+    socket.emit("message", message)
+  }, [socket, appendChat])
+
   useEffect(() => {
     const token = localStorage.getItem("token")
     const user = localStorage.getItem("user")
@@ -28,7 +53,7 @@ export default function ChatBox() {
       return
     }
 
-    const socketConnection = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL, {
+    const socketConnection = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL || '', {
       transports: ["websocket"],
     })
     setSocket(socketConnection)
@@ -40,7 +65,7 @@ export default function ChatBox() {
     return () => {
       socketConnection.disconnect()
     }
-  }, [router])
+  }, [router, appendChat])
 
   useEffect(() => {
     const user = localStorage.getItem("user")
@@ -54,31 +79,6 @@ export default function ChatBox() {
       setChat([])
     }
   }, [selectedChat])
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
-  }
-
-  const appendChat = (message: ChatMessage) => {
-    setChat((prevChat) => {
-      const updatedChat = [...prevChat, message]
-      if (typeof window !== "undefined") {
-        const user = localStorage.getItem("user")
-        if (user) {
-          const { id } = JSON.parse(user)
-          localStorage.setItem(`chatMessages_${selectedChat}-${id}`, JSON.stringify(updatedChat))
-        }
-      }
-      return updatedChat
-    })
-    scrollToBottom()
-  }
-
-  const sendMessage = (message: ChatMessage) => {
-    appendChat(message)
-    if (!socket) return
-    socket.emit("message", message)
-  }
 
   return (
     <div className="relative flex flex-col h-[90vh] bg-chat-gradient">
