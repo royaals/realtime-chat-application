@@ -1,3 +1,4 @@
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -10,5 +11,7 @@ const nextConfig = {
   // Add this for Vercel deployment
   output: 'standalone',
 }
-
+if (process.env.NODE_ENV === 'development') {
+  await setupDevPlatform();
+}
 module.exports = nextConfig
