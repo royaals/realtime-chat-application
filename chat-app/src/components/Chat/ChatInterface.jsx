@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { Box } from '@mui/material';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';

@@ -3,10 +3,21 @@ import api from '../../services/api';
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials) => {
-    const response = await api.post('/auth/local', credentials);
-    localStorage.setItem('token', response.data.jwt);
-    return response.data;
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/local', {
+        identifier: credentials.identifier,
+        password: credentials.password,
+      });
+      
+      // Store token in localStorage
+      localStorage.setItem('token', response.data.jwt);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Login failed. Please try again.'
+      );
+    }
   }
 );
 
@@ -15,13 +26,15 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: localStorage.getItem('token'),
-    status: 'idle',
+    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
   },
   reducers: {
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.status = 'idle';
+      state.error = null;
       localStorage.removeItem('token');
     },
   },
@@ -29,15 +42,17 @@ const authSlice = createSlice({
     builder
       .addCase(login.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.user = action.payload.user;
         state.token = action.payload.jwt;
+        state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   },
 });

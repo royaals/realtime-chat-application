@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { theme } from './theme';
+import store from './store';
+import ResponsiveContainer from './components/Layout/ResponsiveContainer';
+import ErrorBoundary from './components/ErrorBoundary';
+import Login from './components/Auth/Login';
+import ChatInterface from './components/Chat/ChatInterface';
+import PrivateRoute from './components/Auth/PrivateRoute';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <ErrorBoundary>
+          <Router>
+            <ResponsiveContainer>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <ChatInterface />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </ResponsiveContainer>
+          </Router>
+        </ErrorBoundary>
+      </ThemeProvider>
+    </Provider>
+  );
 }
 
-export default App
+export default App;
