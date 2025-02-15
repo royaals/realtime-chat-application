@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "../../components/ui/sidebar"
 import { useState } from "react"
 import { useChat } from "../../context/ChatContext"
 import { ScrollArea } from "../ui/scroll-area"
