@@ -11,7 +11,7 @@ import { Label } from "../../components/ui/label"
 import Link from "next/link"
 import { Loader2 } from "lucide-react"
 import api from "../../utils/api"
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "../../components/Header/ThemeToggle";
 export default function Register() {
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")

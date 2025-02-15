@@ -8,7 +8,7 @@ import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { Label } from "../../components/ui/label"
 import { Loader2 } from "lucide-react"
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "../../components/Header/ThemeToggle";
 import Link from "next/link"
 import api from "../../utils/api"
 
