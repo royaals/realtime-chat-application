@@ -2,11 +2,16 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    optimizeCss: false // Disable optimizeCss since we're having issues
+    optimizeCss: false
   },
-  // Add this to handle the error pages
   typescript: {
     ignoreBuildErrors: true
+  },
+  output: 'standalone',
+  // Add this for better compatibility
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, net: false, tls: false };
+    return config;
   }
 }
 
