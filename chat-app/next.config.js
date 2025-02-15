@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
   experimental: {
-    forceSwcTransforms: true
+    optimizeCss: true
   }
 }
 
