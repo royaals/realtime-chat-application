@@ -5,11 +5,7 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true
-  },
-  experimental: {
-    optimizeCss: true
-  },
-  forceSwcTransforms: true,
+  }
 }
 
 module.exports = nextConfig
