@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "buildCommand": "pnpm run build",
+    "installCommand": "pnpm install",
+    "framework": "nextjs",
+    "outputDirectory": ".next",
+    "env": {
+      "NEXT_PUBLIC_WEBSOCKET_URL": "https://ayna-assignment-u3ip.onrender.com",
+      "NEXT_PUBLIC_API_URL": "https://ayna-assignment-1.onrender.com"
+    }
+  }
