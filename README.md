@@ -36,8 +36,8 @@ A real-time chat web application built with WebSocket technology, featuring user
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/royaals/ayna-assignment.git
-   cd ayna-assignment
+   git clone https://github.com/royaals/realtime-chat-application.git
+   cd realtime-chat-application
    ```
 # Strapi Installation and Configuration
 
